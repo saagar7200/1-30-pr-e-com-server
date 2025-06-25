@@ -27,6 +27,8 @@ app.use(cookieParser())
 // parse url-encoded data
 app.use(express.urlencoded({extended:true}))
 
+
+
 // parse json data
 app.use(express.json())
 

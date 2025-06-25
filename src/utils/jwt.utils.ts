@@ -1,6 +1,6 @@
 
 import jwt from 'jsonwebtoken'
-import { JWTPayload } from '../types/global.types'
+import { JWTPayload, JWTPayloadDecoded } from '../types/global.types'
 
 
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || ''
@@ -13,8 +13,8 @@ export const generateJWTToken = (payload:JWTPayload) =>{
 
 }
 
-export const decodeJWTToken = (token:string) =>{
+export const decodeJWTToken = (token:string):JWTPayloadDecoded =>{
 
-    return jwt.verify(token,JWT_SECRET)
+    return jwt.verify(token,JWT_SECRET) as JWTPayloadDecoded
 }
 
