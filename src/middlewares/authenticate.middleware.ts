@@ -40,6 +40,7 @@ export const authenticate =(roles?:Role[]) =>{
           throw new CustomError('Unauthorized.Access denied',401)
         }
 
+        // check if user role is valid or not
         if(roles && !roles.includes(user.role)){
           throw new CustomError('Forbidden.Access denied',403)
         }
