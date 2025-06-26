@@ -1,25 +1,36 @@
+import express from "express";
+import {
+  create,
+  getAll,
+  getById,
+  remove,
+  update,
+} from "../controllers/product.controller";
+import { authenticate } from "../middlewares/authenticate.middleware";
+import { onlyAdmin } from "../types/global.types";
 
-import express from 'express'
-import { create, getAll, getById, remove, update } from '../controllers/product.controller';
-import { authenticate } from '../middlewares/authenticate.middleware';
-import { onlyAdmin } from '../types/global.types';
+import { uploader } from "../middlewares/file-uploader.middleware";
 
-const router = express.Router()
+const upload = uploader();
 
+const router = express.Router();
 
-router.get('/',getAll);
+router.get("/", getAll);
 
-router.get('/:id',getById)
+router.get("/:id", getById);
 
-router.post('/',authenticate(onlyAdmin),create);
+router.post(
+  "/",
+  authenticate(onlyAdmin),
+  upload.fields([
+    { name: "coverImage", maxCount: 1 },
+    { name: "images", maxCount: 5 },
+  ]),
+  create
+);
 
-router.put('/:id',authenticate(onlyAdmin),update)
+router.put("/:id", authenticate(onlyAdmin), update);
 
-router.delete('/:id',authenticate(onlyAdmin),remove)
-
-
-
-
-
+router.delete("/:id", authenticate(onlyAdmin), remove);
 
 export default router;

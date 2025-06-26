@@ -3,84 +3,96 @@ import { asyncHandler } from "../utils/async-handler.utils";
 import Product from "../models/product.model";
 import CustomError from "../middlewares/error-handler.middleware";
 
+export const create = asyncHandler(async (req: Request, res: Response) => {
+  const data = req.body;
+  const { coverImage, images } = req.files as {
+    coverImage: Express.Multer.File[];
+    images: Express.Multer.File[];
+  };
 
+  console.log(coverImage);
 
-export const create = asyncHandler(async(req:Request,res:Response)=>{
-    const data = req.body;
-    const product = await Product.create(data)
-    res.status(201).json({
-        status:'success',
-        success: true,
-        message: "Product created successfully",
-        data: product
-    });
+  if (!coverImage || coverImage.length > 0) {
+    throw new CustomError("coverImage is required", 404);
+  }
 
-})
+  const product = new Product(data);
 
-export const getAll = asyncHandler(async(req:Request,res:Response)=>{
-    const products = await Product.find()
+  product.coverImage = {
+    path: coverImage[0].path,
+    public_id: coverImage[0].fieldname,
+  };
 
-    res.status(200).json({
-        status: 'success',
-        success: true,
-        message: "Products fetched successfully",
-        data: products
-    });
-})
+  await product.save();
 
-export const getById = asyncHandler(async(req:Request,res:Response)=>{
-    const {id} = req.params;
-    const product = await Product.findById(id)
-    if(!product){
-        throw new CustomError('Product not found', 404);
-    }
+  res.status(201).json({
+    status: "success",
+    success: true,
+    message: "Product created successfully",
+    data: product,
+  });
+});
 
-    res.status(200).json({
-        status: 'success',
-        success: true,
-        message: "Product fetched successfully",
-        data: product
-    });
+export const getAll = asyncHandler(async (req: Request, res: Response) => {
+  const products = await Product.find();
 
-})
+  res.status(200).json({
+    status: "success",
+    success: true,
+    message: "Products fetched successfully",
+    data: products,
+  });
+});
 
+export const getById = asyncHandler(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const product = await Product.findById(id);
+  if (!product) {
+    throw new CustomError("Product not found", 404);
+  }
 
-export const update  = asyncHandler(async(req:Request,res:Response)=>{
-    const {id} = req.params;
-    const data = req.body;
+  res.status(200).json({
+    status: "success",
+    success: true,
+    message: "Product fetched successfully",
+    data: product,
+  });
+});
 
-    const product = await Product.findByIdAndUpdate(id, data, {
-        new: true,
-        runValidators: true
-    });
+export const update = asyncHandler(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const data = req.body;
 
-    if(!product){
-        throw new CustomError('Product not found', 404);
-    }
+  const product = await Product.findByIdAndUpdate(id, data, {
+    new: true,
+    runValidators: true,
+  });
 
-    res.status(200).json({
-        status: 'success',
-        success: true,
-        message: "Product updated successfully",
-        data: product
-    });
-})
+  if (!product) {
+    throw new CustomError("Product not found", 404);
+  }
 
+  res.status(200).json({
+    status: "success",
+    success: true,
+    message: "Product updated successfully",
+    data: product,
+  });
+});
 
-export const remove = asyncHandler(async(req:Request,res:Response)=>{
-    const {id} = req.params;
-    
-    const product = await Product.findByIdAndDelete(id);
+export const remove = asyncHandler(async (req: Request, res: Response) => {
+  const { id } = req.params;
 
-    if(!product){
-        throw new CustomError('Product not found', 404);
-    }
+  const product = await Product.findByIdAndDelete(id);
 
-    res.status(200).json({
-        status: 'success',
-        success: true,
-        message: "Product deleted successfully",
-        data: null
-    });
-})
+  if (!product) {
+    throw new CustomError("Product not found", 404);
+  }
 
+  res.status(200).json({
+    status: "success",
+    success: true,
+    message: "Product deleted successfully",
+    data: null,
+  });
+});

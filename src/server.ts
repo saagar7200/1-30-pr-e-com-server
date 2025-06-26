@@ -1,13 +1,14 @@
 import 'dotenv/config'
-import helmet from 'helmet'
 import express, { NextFunction, Request, Response } from 'express'
-import { connectDb } from './config/db-connect'
 import CustomError, { errorHandler } from './middlewares/error-handler.middleware'
+import { connectDb } from './config/db-connect'
+import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
 
 // importing routes
 import authRoutes from './routes/auth.routes'
 import categoryRoutes from './routes/category.routes'
+import productRoutes from './routes/product.routes'
 
 
 const app = express()
@@ -43,6 +44,7 @@ app.get('/',(req,res)=>{
 // using routes
 app.use('/api/auth',authRoutes)
 app.use('/api/category',categoryRoutes)
+app.use('/api/product',productRoutes)
 
 
 
