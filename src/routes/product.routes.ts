@@ -29,7 +29,15 @@ router.post(
   create
 );
 
-router.put("/:id", authenticate(onlyAdmin), update);
+router.put(
+  "/:id",
+  authenticate(onlyAdmin),
+  upload.fields([
+    { name: "coverImage", maxCount: 1 },
+    { name: "images", maxCount: 5 },
+  ]),
+  update
+);
 
 router.delete("/:id", authenticate(onlyAdmin), remove);
 
