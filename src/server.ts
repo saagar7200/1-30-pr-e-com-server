@@ -10,6 +10,7 @@ import authRoutes from './routes/auth.routes'
 import categoryRoutes from './routes/category.routes'
 import productRoutes from './routes/product.routes'
 import cartRoutes from './routes/cart.routes'
+import wishlistRoutes from './routes/wishlist.routes'
 
 const app = express()
 const PORT = process.env.PORT  || 8080
@@ -46,6 +47,7 @@ app.use('/api/auth',authRoutes)
 app.use('/api/category',categoryRoutes)
 app.use('/api/product',productRoutes)
 app.use('/api/cart',cartRoutes)
+app.use('/api/wishlist',wishlistRoutes)
 
 
 
