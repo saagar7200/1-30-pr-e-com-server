@@ -84,6 +84,7 @@ export const getById = asyncHandler(async (req: Request, res: Response) => {
 // 1. json -> name , category , price ..
 // 2. images [5] [2 old -> delete] [add 2 -> new images]
 
+
 export const update = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
   const { coverImage, images } = req.files as {
@@ -120,7 +121,7 @@ export const update = asyncHandler(async (req: Request, res: Response) => {
 
   // update cover image
   if (coverImage) {
-    if (product.coverImage) {
+      if (product.coverImage) {
       await removeImages([product.coverImage.public_id]);
     }
 
@@ -128,9 +129,11 @@ export const update = asyncHandler(async (req: Request, res: Response) => {
       path: coverImage[0].path,
       public_id: coverImage[0].filename,
     };
+
+  
   }
 
-  //
+  //images
   if (Array.isArray(deletedImage) && deletedImage.length > 0) {
     await removeImages(deletedImage);
     if (product.images) {
@@ -140,6 +143,8 @@ export const update = asyncHandler(async (req: Request, res: Response) => {
         ) as any) ?? [];
     }
   }
+
+  
   if (images && images.length > 0) {
     // update images
     const newImages = images.map((img) => ({
@@ -192,3 +197,35 @@ export const remove = asyncHandler(async (req: Request, res: Response) => {
     data: null,
   });
 });
+
+
+//? get all featured products
+export const getFeaturedProducts = asyncHandler(async(req:Request,res:Response)=>{
+
+  const featured = await Product.find({isFeatured:true}).populate('category')
+
+  res.status(200).json({
+    status:'success',
+    success:true,
+    message:'Featured products fetched successfully',
+    data:featured
+  })
+
+});
+
+//? get by category id
+export const getByCategory = asyncHandler(async(req:Request,res:Response)=>{
+
+  const {categoryId} = req.params;
+
+  const products = await Product.find({category:categoryId}).populate('category')
+
+   res.status(200).json({
+    status:'success',
+    success:true,
+    message:'Products by category fetched successfully',
+    data:products
+  })
+
+})
+

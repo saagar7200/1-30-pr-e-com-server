@@ -2,7 +2,9 @@ import express from "express";
 import {
   create,
   getAll,
+  getByCategory,
   getById,
+  getFeaturedProducts,
   remove,
   update,
 } from "../controllers/product.controller";
@@ -17,6 +19,14 @@ const router = express.Router();
 
 router.get("/", getAll);
 
+// get featured products
+// /api/product/featured
+router.get('/featured',getFeaturedProducts)
+
+// get products by category
+router.get('/category/:categoryId',getByCategory)
+
+// /api/product/1
 router.get("/:id", getById);
 
 router.post(
@@ -40,5 +50,7 @@ router.put(
 );
 
 router.delete("/:id", authenticate(onlyAdmin), remove);
+
+
 
 export default router;

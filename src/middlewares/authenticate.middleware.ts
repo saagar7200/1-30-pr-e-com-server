@@ -45,6 +45,13 @@ export const authenticate =(roles?:Role[]) =>{
           throw new CustomError('Forbidden.Access denied',403)
         }
 
+        req.user = {
+          _id:user._id,
+          role:user.role,
+          email: user.email,
+          full_name: user.full_name,
+        }
+
         next()
 
         }catch(err){

@@ -21,6 +21,12 @@ const userSchema = new mongoose.Schema({
     phone_number:{
         type:String,
     },
+    wishlist:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'product'
+        }
+    ],
     role:{
         type:String,
         enum:Object.values(Role),
