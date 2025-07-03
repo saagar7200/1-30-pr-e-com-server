@@ -28,12 +28,14 @@ export const create = asyncHandler(async(req:Request,res:Response)=>{
     }
 
 
-    const isProductAlreadyExists = user.wishlist.find((product) => product === product._id)
+    const isProductAlreadyExists = user.wishlist.find((wishlistProduct) => wishlistProduct.toString() === product._id.toString())
 
+
+    console.log(isProductAlreadyExists)
 
 
     if(isProductAlreadyExists){
-        user.wishlist = user.wishlist.filter((product) => product !== product._id)
+        user.wishlist = user.wishlist.filter((wishlistProduct) => wishlistProduct.toString() !== product._id.toString())
     }else{
         user.wishlist.push(product._id)
     }
@@ -51,6 +53,32 @@ export const create = asyncHandler(async(req:Request,res:Response)=>{
 
 
 export const clear = asyncHandler(async(req:Request,res:Response)=>{
+
+    const userId = req.user._id;
+
+     const user = await User.findById(userId)
+
+     if(!user){
+        throw new CustomError('user not found',404);
+    }
+
+    user.wishlist = []
+
+    await user.save()
+
+    res.status(200).json({
+        message:`wishlist cleared`,
+        status:'success',
+        success:true, 
+        data:null
+    })
+})
+
+
+// 
+// get wishlist
+
+export const getall = asyncHandler(async(req:Request,res:Response)=>{
 
     const userId = req.user._id;
 
