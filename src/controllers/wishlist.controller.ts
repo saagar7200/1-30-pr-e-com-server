@@ -80,22 +80,22 @@ export const clear = asyncHandler(async(req:Request,res:Response)=>{
 
 export const getall = asyncHandler(async(req:Request,res:Response)=>{
 
-    const userId = req.user._id;
+    // const userId = req.user._id;
 
-     const user = await User.findById(userId)
+    //  const user = await User.findById(userId)
 
-     if(!user){
-        throw new CustomError('user not found',404);
-    }
+    //  if(!user){
+    //     throw new CustomError('user not found',404);
+    // }
 
-    user.wishlist = []
+    // user.wishlist = []
 
-    await user.save()
+    // await user.save()
 
-    res.status(200).json({
-        message:`wishlist cleared`,
-        status:'success',
-        success:true, 
-        data:null
-    })
+    // res.status(200).json({
+    //     message:`wishlist cleared`,
+    //     status:'success',
+    //     success:true, 
+    //     data:null
+    // })
 })
