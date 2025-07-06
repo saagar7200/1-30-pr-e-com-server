@@ -11,7 +11,7 @@ import categoryRoutes from './routes/category.routes'
 import productRoutes from './routes/product.routes'
 import cartRoutes from './routes/cart.routes'
 import wishlistRoutes from './routes/wishlist.routes'
-
+import orderRoutes from './routes/order.routes'
 const app = express()
 const PORT = process.env.PORT  || 8080
 const DB_URI = process.env.DB_URI ?? ''
