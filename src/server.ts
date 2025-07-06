@@ -48,6 +48,7 @@ app.use('/api/category',categoryRoutes)
 app.use('/api/product',productRoutes)
 app.use('/api/cart',cartRoutes)
 app.use('/api/wishlist',wishlistRoutes)
+app.use('/api/order',orderRoutes)
 
 
 

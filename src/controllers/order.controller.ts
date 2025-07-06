@@ -115,3 +115,30 @@ export const getById = asyncHandler(async (req: Request, res: Response) => {
     data: order,
   });
 });
+
+// update order status
+export const updateStatus = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!status) {
+      throw new CustomError("status is required", 400);
+    }
+
+    const order = await Order.findByIdAndUpdate(id, { status }, { new: true });
+
+    if (!order) {
+      throw new CustomError("order not found", 400);
+    }
+
+    res.status(200).json({
+      message: "Order status updated",
+      status: "success",
+      success: true,
+      data: order,
+    });
+  }
+);
+
+// user cancel order
