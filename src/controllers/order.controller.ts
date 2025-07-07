@@ -142,3 +142,30 @@ export const updateStatus = asyncHandler(
 );
 
 // user cancel order
+export const cancelOrderByUser = asyncHandler(async(req:Request,res:Response)=>{
+  // 1.1- get order id from client
+  const {id} = req.params
+  // 1.2- get user id from req.user._id
+  const userId = req.user._id
+  // 2. find order by id
+  const order = await Order.findById(id)
+  if(!order){
+    throw new CustomError('Order not found',404)
+  }
+  // 3. order.user === req.user._id  => 
+
+  if(order.user?.toString() !== userId.toString()){
+    throw new CustomError('You can not cancel this order',403)
+  }
+
+  order.status = 'Canceled';
+
+  await order.save()
+
+  res.status(200).json({
+    message:'Order canceled successfully',
+    success:true,
+    status:'success',
+    data:order
+  })
+})
