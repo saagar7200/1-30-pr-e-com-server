@@ -3,6 +3,7 @@ import { asyncHandler } from "../utils/async-handler.utils";
 import Product from "../models/product.model";
 import Order from "../models/order.model";
 import CustomError from "../middlewares/error-handler.middleware";
+import { OrderStatus } from "../types/global.types";
 
 export const create = asyncHandler(async (req: Request, res: Response) => {
   const user = req.user._id;
@@ -152,13 +153,13 @@ export const cancelOrderByUser = asyncHandler(async(req:Request,res:Response)=>{
   if(!order){
     throw new CustomError('Order not found',404)
   }
-  // 3. order.user === req.user._id  => 
 
+  // 3. order.user === req.user._id  => 
   if(order.user?.toString() !== userId.toString()){
     throw new CustomError('You can not cancel this order',403)
   }
 
-  order.status = 'Canceled';
+  order.status = OrderStatus.CANCELED;
 
   await order.save()
 
