@@ -56,7 +56,61 @@ export const create = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const getAll = asyncHandler(async (req: Request, res: Response) => {
-  const products = await Product.find().populate("category");
+  // http://localhost:port/path?......query
+
+  const {query,minPrice,maxPrice} = req.query;
+  const filter:Record<string,any> = {}
+
+  console.log(query)
+
+  if (query) {
+    filter.$or = [
+      {
+        name: {
+          $regex: query,
+          $options: "i",
+        },
+      },
+      {
+        descrition: {
+          $regex: query,
+          $options: "i",
+        },
+      },
+    ];
+  }
+  
+
+  if(minPrice || maxPrice){
+
+    if(minPrice && maxPrice){
+      filter.price = {
+        $lte:Number(maxPrice as string),
+        $gte:Number(minPrice as string)
+      }
+    }
+
+    if(minPrice){
+      filter.price = {
+        $gte:Number(minPrice as string)
+      }
+    }
+
+     if(maxPrice){
+      filter.price = {
+        $lte:Number(minPrice as string)
+      }
+    }
+
+  }
+
+
+
+
+
+
+
+  const products = await Product.find(filter).populate("category");
 
   res.status(200).json({
     status: "success",
@@ -68,7 +122,7 @@ export const getAll = asyncHandler(async (req: Request, res: Response) => {
 
 export const getById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const product = await Product.findById(id).populate("category");
+  const product = await Product.findOne({_id:id}).populate("category");
   if (!product) {
     throw new CustomError("Product not found", 404);
   }
