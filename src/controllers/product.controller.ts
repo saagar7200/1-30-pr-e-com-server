@@ -4,7 +4,7 @@ import Product from "../models/product.model";
 import CustomError from "../middlewares/error-handler.middleware";
 import Category from "../models/category.model";
 import { removeImages } from "../config/cludinary.config";
-import { IImages } from "../types/global.types";
+import { getPagination } from "../utils/pagination.utils";
 
 export const create = asyncHandler(async (req: Request, res: Response) => {
   const { category: categoryId, ...data } = req.body;
@@ -56,12 +56,15 @@ export const create = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const getAll = asyncHandler(async (req: Request, res: Response) => {
-  // http://localhost:port/path?......query
 
-  const {query,minPrice,maxPrice} = req.query;
+  const {query,minPrice,maxPrice,category,page,limit} = req.query;
   const filter:Record<string,any> = {}
+  // pagination
+  const perPage = parseInt(limit as string) ?? 10
+  const currentPage = parseInt(page as string) ?? 1
+  // calculate skip
+  const skip = (currentPage - 1) * perPage
 
-  console.log(query)
 
   if (query) {
     filter.$or = [
@@ -72,12 +75,16 @@ export const getAll = asyncHandler(async (req: Request, res: Response) => {
         },
       },
       {
-        descrition: {
+        description: {
           $regex: query,
           $options: "i",
         },
       },
     ];
+  }
+
+  if(category){
+    filter.category = category
   }
   
 
@@ -105,18 +112,23 @@ export const getAll = asyncHandler(async (req: Request, res: Response) => {
   }
 
 
+  const products = await Product.find(filter).limit(perPage).skip(skip).sort({createdAt:-1}).populate("category");
+
+  const totalData = await Product.countDocuments(filter)
+
+// calculate pagination data
+  const pagination = getPagination(totalData,perPage,currentPage)
 
 
-
-
-
-  const products = await Product.find(filter).populate("category");
 
   res.status(200).json({
     status: "success",
     success: true,
     message: "Products fetched successfully",
-    data: products,
+    data: {
+      data:products,
+      pagination
+    },
   });
 });
 
@@ -150,7 +162,6 @@ export const update = asyncHandler(async (req: Request, res: Response) => {
 
   deletedImage = JSON.parse(deletedImage ?? "");
 
-  console.log(deletedImage);
 
   if (category) {
     const productCategory = await Category.findById(category);
