@@ -12,13 +12,11 @@ export const authenticate =(roles?:Role[]) =>{
         // 1.get token from req (req.cookie)
 
         const token = req.cookies.access_token
-        console.log(token)
         if(!token){
           throw new CustomError('Unauthorized.Access denied',401)
         }
 
         const decodedData = decodeJWTToken(token)
-        console.log(decodedData)
 
         if(!decodedData){
           throw new CustomError('Unauthorized.Access denied',401)

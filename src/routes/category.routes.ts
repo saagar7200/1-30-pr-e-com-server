@@ -11,7 +11,7 @@ const router = express.Router();
 router.post('/',authenticate([Role.ADMIN]),create);
 
 // get all categories
-router.get('/',authenticate(),getAll)
+router.get('/',getAll)
 
 // get by id 
 router.get('/:id',getById)

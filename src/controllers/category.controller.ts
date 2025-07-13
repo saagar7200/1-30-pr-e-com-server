@@ -53,6 +53,7 @@ export const getAll = asyncHandler(async(req:Request,res:Response) =>{
 
     const categories = await Category.find(filter)
 
+  
     res.status(200).json({
         message:'All category fetched',
         success:true,
