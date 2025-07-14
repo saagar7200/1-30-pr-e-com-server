@@ -5,6 +5,7 @@ import CustomError from "../middlewares/error-handler.middleware";
 import { asyncHandler } from "../utils/async-handler.utils";
 import { generateJWTToken } from "../utils/jwt.utils";
 import { sendMail } from "../utils/nodemailer.utils";
+import { account_registration_confirmation_html } from "../utils/html.utils";
 
 // register
 export const register = asyncHandler(
@@ -33,18 +34,9 @@ export const register = asyncHandler(
       throw new CustomError("Registration failed.Try again later.", 500);
     }
 
-    // send acount created email 
 
-    const html = `
-    <h1>Account Created Successfully</h1>
-    <h2>Account Details</h2>
-    <p><span>Full Name :</span>${user.full_name}</p>
-    <p><span>Email :</span>${user.email}</p>
-    <p><span>Phone :</span>${user.phone_number ?? 'not found'}</p>
-    <h3>You can now login to your account from <a href={${req.protocol}://${req.hostname}}/login>login</a></h3>
-    `
 
-    await sendMail({to:user.email,subject:'Account Registered Successfully',html})
+    await sendMail({to:user.email,subject:'Account Registered Successfully',html:account_registration_confirmation_html(req,user)})
 
 
     // success response

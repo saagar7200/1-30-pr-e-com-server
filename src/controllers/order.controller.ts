@@ -4,9 +4,11 @@ import Product from "../models/product.model";
 import Order from "../models/order.model";
 import CustomError from "../middlewares/error-handler.middleware";
 import { OrderStatus } from "../types/global.types";
+import { sendMail } from "../utils/nodemailer.utils";
+import { oerder_confirmation_html } from "../utils/html.utils";
 
 export const create = asyncHandler(async (req: Request, res: Response) => {
-  const user = req.user._id;
+  const {_id:user,email} = req.user;
   const { items } = req.body;
 
   const orderItems: { product: string; quantity: number }[] = JSON.parse(items);
@@ -38,6 +40,11 @@ export const create = asyncHandler(async (req: Request, res: Response) => {
   const order = new Order({ user, items: filteredItems, totalAmount });
 
   const newOrder = await (await order.save()).populate("items.product");
+
+
+
+  await sendMail({to:email,subject:'Order Placed Successfully',html:oerder_confirmation_html(newOrder.items,Number(totalAmount))})
+  
 
   res.status(201).json({
     message: "Order placed successfully",
