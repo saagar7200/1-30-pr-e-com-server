@@ -47,6 +47,9 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 const category_routes_1 = __importDefault(require("./routes/category.routes"));
 const product_routes_1 = __importDefault(require("./routes/product.routes"));
+const cart_routes_1 = __importDefault(require("./routes/cart.routes"));
+const wishlist_routes_1 = __importDefault(require("./routes/wishlist.routes"));
+const order_routes_1 = __importDefault(require("./routes/order.routes"));
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 8080;
 const DB_URI = (_a = process.env.DB_URI) !== null && _a !== void 0 ? _a : '';
@@ -71,6 +74,9 @@ app.get('/', (req, res) => {
 app.use('/api/auth', auth_routes_1.default);
 app.use('/api/category', category_routes_1.default);
 app.use('/api/product', product_routes_1.default);
+app.use('/api/cart', cart_routes_1.default);
+app.use('/api/wishlist', wishlist_routes_1.default);
+app.use('/api/order', order_routes_1.default);
 app.all('/{*spalt}', (req, res, next) => {
     const message = `Can not ${req.method} on ${req.url}`;
     const error = new error_handler_middleware_1.default(message, 404);

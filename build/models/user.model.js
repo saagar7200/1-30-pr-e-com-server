@@ -24,6 +24,12 @@ const userSchema = new mongoose_1.default.Schema({
     phone_number: {
         type: String,
     },
+    wishlist: [
+        {
+            type: mongoose_1.default.Schema.Types.ObjectId,
+            ref: 'product'
+        }
+    ],
     role: {
         type: String,
         enum: Object.values(global_types_1.Role),

@@ -1,6 +1,8 @@
-import { Request } from "express";
-
-export const account_registration_confirmation_html = (req:Request,user:any) =>{
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.oerder_confirmation_html = exports.account_registration_confirmation_html = void 0;
+const account_registration_confirmation_html = (req, user) => {
+    var _a;
     return `
 <!DOCTYPE html>
 <html lang="en">
@@ -58,7 +60,7 @@ export const account_registration_confirmation_html = (req:Request,user:any) =>{
     <h2>Account Details</h2>
     <p><span class="label">Full Name:</span> ${user.full_name}</p>
     <p><span class="label">Email:</span> ${user.email}</p>
-    <p><span class="label">Phone:</span> ${user.phone_number ?? 'Not provided'}</p>
+    <p><span class="label">Phone:</span> ${(_a = user.phone_number) !== null && _a !== void 0 ? _a : 'Not provided'}</p>
     <p>
       You can now login to your account by clicking the button below:
     </p>
@@ -67,12 +69,11 @@ export const account_registration_confirmation_html = (req:Request,user:any) =>{
 </body>
 </html>
 `;
-}
-
-
-export const  order_confirmation_html = (items:any[],totalAmount:number) =>{
-    return (
-  `<!DOCTYPE html>
+};
+exports.account_registration_confirmation_html = account_registration_confirmation_html;
+const oerder_confirmation_html = (items, totalAmount) => {
+    return (`
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8" />
@@ -137,15 +138,16 @@ export const  order_confirmation_html = (items:any[],totalAmount:number) =>{
         <div class="item-price">Price</div>
       </div>
 
-      ${
-        items.map((item:any) => `
+      ${items.map((item) => {
+        var _a, _b, _c, _d;
+        return `
           <div class="order-item">
-            <div class="item-name">${item.product?.name ?? '-'}</div>
-            <div class="item-qty">${item.quantity ?? '-'}</div>
-            <div class="item-price">${item.product?.price ? '$' + item.product.price.toFixed(2) : '-'}</div>
+            <div class="item-name">${(_b = (_a = item.product) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : '-'}</div>
+            <div class="item-qty">${(_c = item.quantity) !== null && _c !== void 0 ? _c : '-'}</div>
+            <div class="item-price">${((_d = item.product) === null || _d === void 0 ? void 0 : _d.price) ? '$' + item.product.price.toFixed(2) : '-'}</div>
           </div>
-        `).join('')
-      }
+        `;
+    }).join('')}
 
       <div class="order-total">
         <div class="item-name">Total Amount</div>
@@ -156,7 +158,6 @@ export const  order_confirmation_html = (items:any[],totalAmount:number) =>{
   </div>
 </body>
 </html>
-`
-
-    )
-}
+`);
+};
+exports.oerder_confirmation_html = oerder_confirmation_html;

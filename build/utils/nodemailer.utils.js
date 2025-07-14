@@ -11,26 +11,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeImages = void 0;
-const cloudinary_1 = require("cloudinary");
-const error_handler_middleware_1 = __importDefault(require("../middlewares/error-handler.middleware"));
-cloudinary_1.v2.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
+exports.sendMail = void 0;
+const nodemailer_1 = __importDefault(require("nodemailer"));
+const transporter = nodemailer_1.default.createTransport({
+    // @ts-expect-error 
+    host: (_a = process.env.SMTP_HOST) !== null && _a !== void 0 ? _a : "smtp.gmail.com",
+    port: process.env.SMTP_PORT,
+    secure: parseInt((_b = process.env.SMTP_PORT) !== null && _b !== void 0 ? _b : '') === 465 ? true : false,
+    auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS
+    }
 });
-// function to delete cloudinary images
-const removeImages = (public_Ids) => __awaiter(void 0, void 0, void 0, function* () {
+const sendMail = (options) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        public_Ids.forEach((public_id) => __awaiter(void 0, void 0, void 0, function* () {
-            yield cloudinary_1.v2.uploader.destroy(public_id);
-        }));
-        return true;
+        yield transporter.sendMail({
+            from: `shop-kart<${process.env.SMTP_USER}>`,
+            subject: options.subject,
+            to: options.to,
+            html: options.html
+        });
     }
     catch (error) {
-        throw new error_handler_middleware_1.default("Something went wrong", 500);
+        console.log(error);
     }
 });
-exports.removeImages = removeImages;
-exports.default = cloudinary_1.v2;
+exports.sendMail = sendMail;

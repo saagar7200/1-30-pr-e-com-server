@@ -4,6 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
+// 1. brand model 
+// 2. brand controller -> [CRUD]
+// 3. routes from brand
+// 4. use brand route on server.ts
+// 5. update product model -> product -> add brand field -> ref. brand  collection/document 
 const productSchema = new mongoose_1.default.Schema({
     name: {
         type: String,
@@ -15,6 +20,11 @@ const productSchema = new mongoose_1.default.Schema({
         required: [true, "price is required"],
         min: [0, "price must be a positive number"],
     },
+    // brand:{
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "brand",
+    //   required: [true, "brand is required"],
+    // },
     category: {
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: "category",

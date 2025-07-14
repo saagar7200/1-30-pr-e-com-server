@@ -11,11 +11,20 @@ const file_uploader_middleware_1 = require("../middlewares/file-uploader.middlew
 const upload = (0, file_uploader_middleware_1.uploader)();
 const router = express_1.default.Router();
 router.get("/", product_controller_1.getAll);
+// get featured products
+// /api/product/featured
+router.get('/featured', product_controller_1.getFeaturedProducts);
+// get products by category
+router.get('/category/:categoryId', product_controller_1.getByCategory);
+// /api/product/1
 router.get("/:id", product_controller_1.getById);
 router.post("/", (0, authenticate_middleware_1.authenticate)(global_types_1.onlyAdmin), upload.fields([
     { name: "coverImage", maxCount: 1 },
     { name: "images", maxCount: 5 },
 ]), product_controller_1.create);
-router.put("/:id", (0, authenticate_middleware_1.authenticate)(global_types_1.onlyAdmin), product_controller_1.update);
+router.put("/:id", (0, authenticate_middleware_1.authenticate)(global_types_1.onlyAdmin), upload.fields([
+    { name: "coverImage", maxCount: 1 },
+    { name: "images", maxCount: 5 },
+]), product_controller_1.update);
 router.delete("/:id", (0, authenticate_middleware_1.authenticate)(global_types_1.onlyAdmin), product_controller_1.remove);
 exports.default = router;

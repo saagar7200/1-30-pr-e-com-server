@@ -32,7 +32,26 @@ exports.create = (0, async_handler_utils_1.asyncHandler)((req, res) => __awaiter
 }));
 // get all categories
 exports.getAll = (0, async_handler_utils_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const categories = yield category_model_1.default.find();
+    const { query } = req.query;
+    const filter = {};
+    // query filter on category name and description
+    if (query) {
+        filter.$or = [
+            {
+                name: {
+                    $regex: query,
+                    $options: "i",
+                },
+            },
+            {
+                descrition: {
+                    $regex: query,
+                    $options: "i",
+                },
+            },
+        ];
+    }
+    const categories = yield category_model_1.default.find(filter);
     res.status(200).json({
         message: 'All category fetched',
         success: true,

@@ -22,12 +22,10 @@ const authenticate = (roles) => {
         try {
             // 1.get token from req (req.cookie)
             const token = req.cookies.access_token;
-            console.log(token);
             if (!token) {
                 throw new error_handler_middleware_1.default('Unauthorized.Access denied', 401);
             }
             const decodedData = (0, jwt_utils_1.decodeJWTToken)(token);
-            console.log(decodedData);
             if (!decodedData) {
                 throw new error_handler_middleware_1.default('Unauthorized.Access denied', 401);
             }
@@ -46,6 +44,12 @@ const authenticate = (roles) => {
             if (roles && !roles.includes(user.role)) {
                 throw new error_handler_middleware_1.default('Forbidden.Access denied', 403);
             }
+            req.user = {
+                _id: user._id,
+                role: user.role,
+                email: user.email,
+                full_name: user.full_name,
+            };
             next();
         }
         catch (err) {
