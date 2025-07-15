@@ -44,7 +44,7 @@ exports.create = (0, async_handler_utils_1.asyncHandler)((req, res) => __awaiter
         .toFixed(2);
     const order = new order_model_1.default({ user, items: filteredItems, totalAmount });
     const newOrder = yield (yield order.save()).populate("items.product");
-    yield (0, nodemailer_utils_1.sendMail)({ to: email, subject: 'Order Placed Successfully', html: (0, html_utils_1.oerder_confirmation_html)(newOrder.items, Number(totalAmount)) });
+    yield (0, nodemailer_utils_1.sendMail)({ to: email, subject: 'Order Placed Successfully', html: (0, html_utils_1.order_confirmation_html)(newOrder.items, Number(totalAmount)) });
     res.status(201).json({
         message: "Order placed successfully",
         success: true,

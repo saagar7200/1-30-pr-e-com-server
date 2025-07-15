@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.oerder_confirmation_html = exports.account_registration_confirmation_html = void 0;
+exports.order_confirmation_html = exports.account_registration_confirmation_html = void 0;
 const account_registration_confirmation_html = (req, user) => {
     var _a;
     return `
@@ -71,9 +71,8 @@ const account_registration_confirmation_html = (req, user) => {
 `;
 };
 exports.account_registration_confirmation_html = account_registration_confirmation_html;
-const oerder_confirmation_html = (items, totalAmount) => {
-    return (`
-<!DOCTYPE html>
+const order_confirmation_html = (items, totalAmount) => {
+    return (`<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8" />
@@ -160,4 +159,4 @@ const oerder_confirmation_html = (items, totalAmount) => {
 </html>
 `);
 };
-exports.oerder_confirmation_html = oerder_confirmation_html;
+exports.order_confirmation_html = order_confirmation_html;
