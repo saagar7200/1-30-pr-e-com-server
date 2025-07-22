@@ -3,9 +3,14 @@ import { Role } from "../types/global.types";
 
 
 const userSchema = new mongoose.Schema({
-    full_name:{
+    first_name:{
         type:String,
-        required:[true, 'full_name is required'],
+        required:[true, 'first_name is required'],
+        trim:true,
+    }, 
+    last_name:{
+        type:String,
+        required:[true, 'last_name is required'],
         trim:true,
     },
     email:{

@@ -23,7 +23,7 @@ const html_utils_1 = require("../utils/html.utils");
 // register
 exports.register = (0, async_handler_utils_1.asyncHandler)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // req.body
-    const { email, full_name, password, phone_number } = req.body;
+    const { email, first_name, last_name, password, phone_number } = req.body;
     if (!password) {
         throw new error_handler_middleware_1.default("Password is required.", 400);
     }
@@ -32,7 +32,8 @@ exports.register = (0, async_handler_utils_1.asyncHandler)((req, res, next) => _
     // creating new user
     const user = yield user_model_1.default.create({
         email,
-        full_name,
+        first_name,
+        last_name,
         password: hashedPassword,
         phone_number,
     });
@@ -73,7 +74,8 @@ exports.login = (0, async_handler_utils_1.asyncHandler)((req, res, next) => __aw
     }
     // jwt token
     const payload = {
-        full_name: user.full_name,
+        first_name: user.first_name,
+        last_name: user.last_name,
         _id: user._id,
         role: user.role,
         email: user.email,
