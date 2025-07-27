@@ -4,6 +4,7 @@ import CustomError, { errorHandler } from './middlewares/error-handler.middlewar
 import { connectDb } from './config/db-connect'
 import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
+import cors from 'cors'
 
 // importing routes
 import authRoutes from './routes/auth.routes'
@@ -22,6 +23,9 @@ const DB_URI = process.env.DB_URI ?? ''
 connectDb(DB_URI)
 
 // using middlewares
+app.use(cors({
+    origin:'*'
+}))
 // to set security headers / removes insecure headers
 app.use(helmet())
 // parse req cookie
