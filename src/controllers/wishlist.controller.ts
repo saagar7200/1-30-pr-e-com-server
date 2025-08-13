@@ -82,7 +82,7 @@ export const getall = asyncHandler(async(req:Request,res:Response)=>{
 
     const userId = req.user._id;
 
-     const user = await User.findById(userId)
+     const user = await User.findById(userId).populate('wishlist')
 
      if(!user){
         throw new CustomError('user not found',404);
