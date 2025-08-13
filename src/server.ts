@@ -17,20 +17,20 @@ const app = express()
 const PORT = process.env.PORT  || 8080
 const DB_URI = process.env.DB_URI ?? ''
 
-// 
+
 
 // connecting database
 connectDb(DB_URI)
 
-// using middlewares
+//! using middlewares
 app.use(cors({
     origin:'*'
 }))
-// to set security headers / removes insecure headers
+//* to set security headers / removes insecure headers
 app.use(helmet())
-// parse req cookie
+//* parse req cookie
 app.use(cookieParser())
-// parse url-encoded data
+//* parse url-encoded & multipart/formdata data
 app.use(express.urlencoded({extended:true}))
 
 

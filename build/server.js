@@ -54,18 +54,17 @@ const order_routes_1 = __importDefault(require("./routes/order.routes"));
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 8080;
 const DB_URI = (_a = process.env.DB_URI) !== null && _a !== void 0 ? _a : '';
-// 
 // connecting database
 (0, db_connect_1.connectDb)(DB_URI);
-// using middlewares
+//! using middlewares
 app.use((0, cors_1.default)({
     origin: '*'
 }));
-// to set security headers / removes insecure headers
+//* to set security headers / removes insecure headers
 app.use((0, helmet_1.default)());
-// parse req cookie
+//* parse req cookie
 app.use((0, cookie_parser_1.default)());
-// parse url-encoded data
+//* parse url-encoded & multipart/formdata data
 app.use(express_1.default.urlencoded({ extended: true }));
 // parse json data
 app.use(express_1.default.json());

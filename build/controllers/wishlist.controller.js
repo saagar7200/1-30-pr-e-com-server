@@ -65,17 +65,17 @@ exports.clear = (0, async_handler_utils_1.asyncHandler)((req, res) => __awaiter(
 // 
 // get wishlist
 exports.getall = (0, async_handler_utils_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // const userId = req.user._id;
-    //  const user = await User.findById(userId)
-    //  if(!user){
-    //     throw new CustomError('user not found',404);
-    // }
+    const userId = req.user._id;
+    const user = yield user_model_1.default.findById(userId);
+    if (!user) {
+        throw new error_handler_middleware_1.default('user not found', 404);
+    }
     // user.wishlist = []
     // await user.save()
-    // res.status(200).json({
-    //     message:`wishlist cleared`,
-    //     status:'success',
-    //     success:true, 
-    //     data:null
-    // })
+    res.status(200).json({
+        message: `wishlist fetched`,
+        status: 'success',
+        success: true,
+        data: user.wishlist
+    });
 }));
