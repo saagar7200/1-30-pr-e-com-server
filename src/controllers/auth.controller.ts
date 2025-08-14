@@ -102,7 +102,8 @@ export const login = asyncHandler(
         httpOnly: true,
         maxAge:
           parseInt(process.env.COOKIE_EXPIRES_IN ?? "1") * 24 * 60 * 60 * 1000,
-        secure: false,
+        secure: process.env.NODE_ENV  === 'development' ?  false : true,
+        sameSite:'none'
       })
       .json({
         message: "Login success",

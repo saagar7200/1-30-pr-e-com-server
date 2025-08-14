@@ -90,7 +90,8 @@ exports.login = (0, async_handler_utils_1.asyncHandler)((req, res, next) => __aw
         .cookie("access_token", token, {
         httpOnly: true,
         maxAge: parseInt((_a = process.env.COOKIE_EXPIRES_IN) !== null && _a !== void 0 ? _a : "1") * 24 * 60 * 60 * 1000,
-        secure: false,
+        secure: process.env.NODE_ENV === 'development' ? false : true,
+        sameSite: 'none'
     })
         .json({
         message: "Login success",
