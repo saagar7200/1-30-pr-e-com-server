@@ -102,8 +102,8 @@ export const login = asyncHandler(
         httpOnly: true,
         maxAge:
           parseInt(process.env.COOKIE_EXPIRES_IN ?? "1") * 24 * 60 * 60 * 1000,
-        secure: process.env.NODE_ENV  === 'development' ?  false : true,
-        sameSite:'none'
+          secure: process.env.NODE_ENV  === 'development' ?  false : true,
+          sameSite:'none'
       })
       .json({
         message: "Login success",
@@ -116,5 +116,20 @@ export const login = asyncHandler(
       });
   }
 );
+
+
+export const logout = asyncHandler(async(req:Request,res:Response)=>{
+   res.clearCookie('access_token',{
+      httpOnly:true,
+      secure: process.env.NODE_ENV  === 'development' ?  false : true,
+      sameSite:'none'
+   }).status(200).json({
+    message:'Logged out successfully',
+    success:true,
+    status:'success'
+   })
+})
+
+// 
 
 

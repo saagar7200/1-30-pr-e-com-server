@@ -58,7 +58,7 @@ const DB_URI = (_a = process.env.DB_URI) !== null && _a !== void 0 ? _a : '';
 (0, db_connect_1.connectDb)(DB_URI);
 //! using middlewares
 app.use((0, cors_1.default)({
-    origin: 'http://localhost:3000',
+    origin: process.env.FORNT_END_URL || 'http://localhost:3000',
     credentials: true
 }));
 //* to set security headers / removes insecure headers

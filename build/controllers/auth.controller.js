@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = exports.register = void 0;
+exports.logout = exports.login = exports.register = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
 const bcrypt_utils_1 = require("../utils/bcrypt.utils");
 const error_handler_middleware_1 = __importDefault(require("../middlewares/error-handler.middleware"));
@@ -103,3 +103,15 @@ exports.login = (0, async_handler_utils_1.asyncHandler)((req, res, next) => __aw
         },
     });
 }));
+exports.logout = (0, async_handler_utils_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    res.clearCookie('access_token', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'development' ? false : true,
+        sameSite: 'none'
+    }).status(200).json({
+        message: 'Logged out successfully',
+        success: true,
+        status: 'success'
+    });
+}));
+// 
